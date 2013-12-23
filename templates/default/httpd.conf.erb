@@ -1,0 +1,80 @@
+ServerRoot "/etc/httpd"
+DocumentRoot "/var/www/html/"
+Listen 80
+KeepAlive On
+KeepAliveTimeout 15
+MaxKeepAliveRequests 100
+Timeout 300
+
+<IfModule prefork.c>
+MaxClients       150
+StartServers     5
+MinSpareServers  5
+MaxSpareServers 15
+</IfModule>
+
+<IfModule worker.c>
+StartServers         2
+MaxClients         150
+MinSpareThreads     25
+MaxSpareThreads     75
+ThreadsPerChild     25
+MaxRequestsPerChild  0
+</IfModule>
+
+User  apache
+Group apache
+
+PidFile run/httpd.pid
+
+ServerAdmin asahi551182@gmail.com
+
+UseCanonicalName Off
+
+AddDefaultCharset UTF-8
+HostnameLookups Off
+ServerTokens Prod
+DefaultType text/plain
+TypesConfig /etc/mime.types
+MaxRequestsPerChild 0
+ErrorLog logs/error_log
+Include conf.d/*.conf
+AccessFileName .htaccess
+
+<Directory />
+    Options FollowSymLinks
+    AllowOverride None
+</Directory>
+
+<Directory "/var/www/html">
+    Options  FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+#<VirtualHost *:80>
+#    ServerAdmin webmaster@dummy-host.example.com
+#    DocumentRoot /www/docs/dummy-host.example.com
+#    ServerName dummy-host.example.com
+#    ErrorLog logs/dummy-host.example.com-error_log
+#</VirtualHost>
+
+
+DirectoryIndex index.html index.php
+
+LoadModule auth_basic_module modules/mod_auth_basic.so
+LoadModule auth_digest_module modules/mod_auth_digest.so
+LoadModule authn_file_module modules/mod_authn_file.so
+LoadModule authz_host_module modules/mod_authz_host.so
+LoadModule authz_user_module modules/mod_authz_user.so
+LoadModule log_config_module modules/mod_log_config.so
+LoadModule expires_module modules/mod_expires.so
+LoadModule headers_module modules/mod_headers.so
+LoadModule setenvif_module modules/mod_setenvif.so
+LoadModule mime_module modules/mod_mime.so
+LoadModule status_module modules/mod_status.so
+LoadModule negotiation_module modules/mod_negotiation.so
+LoadModule dir_module modules/mod_dir.so
+LoadModule alias_module modules/mod_alias.so
+LoadModule rewrite_module modules/mod_rewrite.so
+LoadModule version_module modules/mod_version.so
