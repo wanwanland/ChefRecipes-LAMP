@@ -23,7 +23,7 @@ package "mysql" do
 	action :install
 end
 
-%w{php php-common php-mbstring php-xml php-devel php-process php-cli  php-mysql mysql-server gd-devel curl-devel}.each do |p|
+%w{php php-common php-mbstring php-xml php-devel php-process php-cli  php-mysql mysql-server php-pdo gd-devel curl-devel}.each do |p|
     package p do
         action :install
     end

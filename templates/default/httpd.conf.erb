@@ -6,6 +6,8 @@ KeepAliveTimeout 15
 MaxKeepAliveRequests 100
 Timeout 300
 
+NameVirtualHost *:80$
+
 <IfModule prefork.c>
 MaxClients       150
 StartServers     5
@@ -38,8 +40,38 @@ DefaultType text/plain
 TypesConfig /etc/mime.types
 MaxRequestsPerChild 0
 ErrorLog logs/error_log
+
+#
+# The following directives define some format nicknames for use with
+# a CustomLog directive (see below).
+#
+LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+LogFormat "%h %l %u %t \"%r\" %>s %b" common
+LogFormat "%{Referer}i -> %U" referer
+LogFormat "%{User-agent}i" agent
+
+
+
 Include conf.d/*.conf
 AccessFileName .htaccess
+
+#.htaccessにアクセス禁止
+<Files ~ "^\.ht">
+    Order allow,deny
+    Deny from all
+    Satisfy All
+</Files>
+
+#
+# "/var/www/cgi-bin" should be changed to whatever your ScriptAliased
+# CGI directory exists, if you have that configured.
+#
+<Directory "/var/www/cgi-bin">
+    AllowOverride None
+    Options None
+    Order allow,deny
+    Allow from all
+</Directory>
 
 <Directory />
     Options FollowSymLinks
@@ -56,7 +88,21 @@ AccessFileName .htaccess
 #    ServerAdmin webmaster@dummy-host.example.com
 #    DocumentRoot /www/docs/dummy-host.example.com
 #    ServerName dummy-host.example.com
-#    ErrorLog logs/dummy-host.example.com-error_log
+#    ErrorLog "logs/example.com-error_log"
+#    CustomLog "logs/example.com-access_log" common
+#    <Directory "/var/www/html/example.com">
+#	   #BASIC認証
+#      AuthUserFile /etc/httpd/conf/htpasswd/example.com/.htpasswd
+#      AuthGroupFile /dev/null
+#      AuthName "Basic Auth"
+#      AuthType Basic
+#      Require valid-user
+#      #/BASIC認証
+#      Options  FollowSymLinks
+#      AllowOverride None
+#      Order allow,deny
+#      Allow from all
+#    </Directory>
 #</VirtualHost>
 
 
