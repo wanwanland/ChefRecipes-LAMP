@@ -33,6 +33,7 @@ service "httpd" do
 	supports :status => true, :restart => true, :reload => true
 	action [:enable, :start ]
 end
+
 bash "stert_page" do
 	user "root"
 	cwd "/var/www/html/"

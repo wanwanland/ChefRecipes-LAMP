@@ -75,12 +75,14 @@ AccessFileName .htaccess
 
 <Directory />
     Options FollowSymLinks
-    AllowOverride None
+    AllowOverride all
 </Directory>
 
 <Directory "/var/www/html">
     Options  FollowSymLinks
-    AllowOverride None
+    #.htaccessの許可
+    AllowOverride all
+    #アクセス制限
     Order allow,deny
     Allow from all
 </Directory>
